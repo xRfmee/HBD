@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday, Tia Amanda!</title>
+    <style>
+        body {margin:0;padding:0;overflow:hidden;height:100vh;background:black;display:flex;justify-content:center;align-items:center;flex-direction:column;color:white;font-family:'Comic Sans MS',cursive,sans-serif;text-align:center;}
+        h1 {font-size:60px;text-shadow:0 0 20px #ffccff,0 0 40px #ff66b2;animation:glow 1.5s ease-in-out infinite alternate;}
+        p {font-size:24px;margin-bottom:20px;}
+        @keyframes glow {from{text-shadow:0 0 20px #ffccff,0 0 40px #ff66b2;}to{text-shadow:0 0 40px #ffffff,0 0 60px #ffccff;}}
+        img {width:200px;height:200px;border-radius:50%;border:5px solid white;box-shadow:0 0 25px rgba(255,255,255,0.8);margin-bottom:20px;object-fit:cover;z-index:5;}
+        .confetti {position:absolute;width:10px;height:10px;background-color:white;opacity:0.7;animation:fall 5s linear infinite;z-index:1;}
+        @keyframes fall {0%{transform:translateY(-10vh) rotate(0deg);}100%{transform:translateY(110vh) rotate(360deg);}}
+        .balloon {position:absolute;bottom:-150px;width:80px;height:100px;background-color:red;border-radius:50% 50% 50% 50%;opacity:0.7;animation:fly 10s linear infinite;z-index:1;}
+        @keyframes fly {0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-120vh) rotate(360deg);}}
+        #fireworksCanvas {position:fixed;top:0;left:0;z-index:0;}
+    </style>
+</head>
+<body>
+    <canvas id="fireworksCanvas"></canvas>
+    <img id="foto" src="tia_amanda.jpg" alt="Foto Ulang Tahun">
+    <h1>Happy Birthday, <span id="nama">Tia Amanda</span>! 🎉</h1>
+    <p id="ucapan">Semoga harimu penuh kebahagiaan, tawa, dan kejutan indah!
+
+    maaf cuma bisa ngasih ga guna kaya gini😸</p>
+    <audio id="music" autoplay loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_482b0338e8.mp3?filename=happy-birthday-120285.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung pemutar audio.
+    </audio>
+    <script>
+        for(let i=0;i<100;i++){const confetti=document.createElement("div");confetti.classList.add("confetti");confetti.style.left=Math.random()*100+"vw";confetti.style.animationDuration=(Math.random()*3+2)+"s";confetti.style.backgroundColor="hsl("+Math.random()*360+",100%,75%)";document.body.appendChild(confetti);}
+        for(let i=0;i<15;i++){const balloon=document.createElement("div");balloon.classList.add("balloon");balloon.style.left=Math.random()*100+"vw";balloon.style.backgroundColor="hsl("+Math.random()*360+",80%,60%)";balloon.style.animationDuration=(Math.random()*5+5)+"s";document.body.appendChild(balloon);}
+        const canvas=document.getElementById('fireworksCanvas');const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;const fireworks=[];
+        class Firework{constructor(x,y){this.x=x;this.y=y;this.particles=[];for(let i=0;i<50;i++){this.particles.push({x:this.x,y:this.y,angle:Math.random()*2*Math.PI,speed:Math.random()*5+2,radius:2,alpha:1});}}update(){this.particles.forEach(p=>{p.x+=Math.cos(p.angle)*p.speed;p.y+=Math.sin(p.angle)*p.speed;p.alpha-=0.02;});}draw(){this.particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);ctx.fillStyle=`rgba(255,${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${p.alpha})`;ctx.fill();});}}
+        function animateFireworks(){ctx.clearRect(0,0,canvas.width,canvas.height);if(Math.random()<0.05){fireworks.push(new Firework(Math.random()*canvas.width,Math.random()*canvas.height));}fireworks.forEach((f,i)=>{f.update();f.draw();if(f.particles.every(p=>p.alpha<=0))fireworks.splice(i,1);});requestAnimationFrame(animateFireworks);}animateFireworks();
+        window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+    </script>
+</body>
+</html>
